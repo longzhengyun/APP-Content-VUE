@@ -3,10 +3,10 @@
     <div>
       <logo/>
       <h1 class="title">
-        APP-Content-VUE
+        app-content-vue
       </h1>
       <h2 class="subtitle">
-        My wondrous Nuxt.js project
+        My fantabulous Nuxt.js project
       </h2>
       <div class="links">
         <a

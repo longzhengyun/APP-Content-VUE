@@ -1,6 +1,6 @@
-# APP-Content-VUE
+# app-content-vue
 
-> My wondrous Nuxt.js project
+> My fantabulous Nuxt.js project
 
 ## Build Setup
 
