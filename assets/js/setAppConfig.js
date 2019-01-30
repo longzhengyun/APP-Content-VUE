@@ -12,7 +12,7 @@ const setHeaderConfigAction = (name) => {
     if (name === 'home') {
         config = {
             showBack: false,
-            title: '贝壳多多'
+            title: '首页'
         }
     }
 
@@ -32,7 +32,7 @@ const setHeaderConfigAction = (name) => {
     }
 
     // hack 活动页隐藏header
-    if (name.indexOf('activities') === 0) {
+    if (name && name.indexOf('activities') === 0) {
         config = {
             showHeader: false,
             title: ''

@@ -1,6 +1,6 @@
 {
-    "name": "贝壳多多",
-    "short_name": "贝壳多多",
+    "name": "APP",
+    "short_name": "APP",
     "display": "fullscreen",
     "start_url": "/",
     "theme_color": "#af925d",

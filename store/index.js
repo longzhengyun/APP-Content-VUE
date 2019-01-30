@@ -1,14 +1,11 @@
 import Vuex from 'vuex'
 
 const state = {
-    loginInfo: {
-        state: false
-    },
+    userInfo: null,
     headerConfig: {
         showHeader: true,
         showBack: true,
-        showClose: false,
-        showMineHeader: false,
+        showSet: false,
         title: ''
     },
     menuConfig: {
@@ -22,7 +19,7 @@ const state = {
                 url: '/home'
             },
             {
-                name: '推广赚钱',
+                name: '列表',
                 icon: '/img/common/icon_product.png',
                 iconCurrent: '/img/common/icon_product_current.png',
                 url: '/product'
@@ -35,12 +32,13 @@ const state = {
             }
         ]
     },
-    appVersion: ''
+    appVersion: '',
+    mobileBook: []
 }
 
 const mutations = {
-    loginInfo (state, data) {
-        Object.assign(state.loginInfo, data)
+    userInfo (state, data) {
+        state.userInfo = data
     },
     headerConfig (state, data) {
         Object.assign(state.headerConfig, data)
@@ -50,6 +48,9 @@ const mutations = {
     },
     appVersion (state, data) {
         state.appVersion = data
+    },
+    mobileBook(state, data) {
+        state.mobileBook = data
     }
 }
 

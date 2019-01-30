@@ -1,4 +1,4 @@
-const pkg = require('./package')
+import pkg from './package'
 
 module.exports = {
   mode: 'universal',
@@ -39,13 +39,14 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css'],
+  css: ['~assets/css/main'],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~plugins/swiper.js', ssr: false }
+    { src: '~plugins/mescroll.client.js'},
+    { src: '~plugins/swiper.client.js'}
   ],
 
   /*
@@ -79,8 +80,8 @@ module.exports = {
   render: {
     http2: {
       push: true
-    }
-    // resourceHints: false // 禁用预加载渲染，解决多项目加载不相干js问题
+    },
+    resourceHints: false // 禁用预加载渲染，解决多项目加载不相干js问题
   },
   cache: true,
   toast: {

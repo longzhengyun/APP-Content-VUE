@@ -1,20 +1,22 @@
-const express = require('express')
-const consola = require('consola')
-const { Nuxt, Builder } = require('nuxt')
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
+import express from 'express'
+import consola from 'consola'
+import { Nuxt, Builder } from 'nuxt'
+import api from './api'
 
 const app = express()
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 app.set('port', port)
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: false
-}))
+app.use(bodyParser.json({ limit: '10000kb' })) // 请求体数据大小限制为10M
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+
+// Import API Routes
+app.use('/api', api)
 
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
