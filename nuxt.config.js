@@ -45,7 +45,6 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~plugins/mescroll.client.js'},
     { src: '~plugins/swiper.client.js'}
   ],
 

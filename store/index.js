@@ -1,6 +1,4 @@
-import Vuex from 'vuex'
-
-const state = {
+export const state = () => ({
     userInfo: null,
     headerConfig: {
         showHeader: true,
@@ -11,8 +9,7 @@ const state = {
     menuConfig: {
         showMenu: false,
         currentIndex: 0,
-        item: [
-            {
+        item: [{
                 name: '首页',
                 icon: '/img/common/icon_index.png',
                 iconCurrent: '/img/common/icon_index_current.png',
@@ -20,9 +17,9 @@ const state = {
             },
             {
                 name: '列表',
-                icon: '/img/common/icon_product.png',
-                iconCurrent: '/img/common/icon_product_current.png',
-                url: '/product'
+                icon: '/img/common/icon_list.png',
+                iconCurrent: '/img/common/icon_list_current.png',
+                url: '/list'
             },
             {
                 name: '我的',
@@ -34,9 +31,9 @@ const state = {
     },
     appVersion: '',
     mobileBook: []
-}
+})
 
-const mutations = {
+export const mutations = {
     userInfo (state, data) {
         state.userInfo = data
     },
@@ -49,19 +46,9 @@ const mutations = {
     appVersion (state, data) {
         state.appVersion = data
     },
-    mobileBook(state, data) {
+    mobileBook (state, data) {
         state.mobileBook = data
     }
 }
 
-const actions = {}
-
-const createStore = () => {
-    return new Vuex.Store({
-        state,
-        mutations,
-        actions
-    })
-}
-
-export default createStore
+export const actions = {}

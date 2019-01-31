@@ -16,16 +16,25 @@ const setHeaderConfigAction = (name) => {
         }
     }
 
+    // list
+    if (name === 'list') {
+        config = {
+            showBack: false,
+            title: '列表'
+        }
+    }
+
     // mine
     if (name === 'mine') {
         config = {
             showBack: false,
-            showMineHeader: true
+            showSet: true,
+            title: '我的'
         }
     }
 
-    // set
-    if (name === 'set') {
+    // mine/set
+    if (name === 'mine-set') {
         config = {
             title: '设置'
         }
@@ -53,8 +62,8 @@ const setMenuConfigAction = (name) => {
         }
     }
 
-    // product
-    if (name === 'product') {
+    // list
+    if (name === 'list') {
         config = {
             showMenu: true,
             currentIndex: 1

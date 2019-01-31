@@ -26,6 +26,12 @@
 
 <script>
   export default {
+    name: 'login',
+    head () {
+      return {
+        title: '登录'
+      }
+    },
     data () {
       return {
         showLogin: false,
@@ -40,11 +46,6 @@
         },
         timer: null,
         contractsCheckbox: true
-      }
-    },
-    head () {
-      return {
-        title: '登录'
       }
     },
     watch: {

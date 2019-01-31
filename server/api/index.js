@@ -129,8 +129,32 @@ router.post('/app/indexData', (req, res) => {
             code: 0,
             message: '获取数据成功',
             response: {
-                banner: [],
-                alert: {}
+                banner: [
+                    {
+                        title: '首页轮播图1',
+                        image_url: 'https://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=c1d43fd26a061d957d133f3e4bc426e9/5366d0160924ab18fffea7dd31fae6cd7a890b6b.jpg',
+                        jump_url: 'https://www.baidu.com',
+                        jump_type: 1
+                    },
+                    {
+                        title: '首页轮播图2',
+                        image_url: 'https://gss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=d5f42a97b67eca80125031e1a113bbe5/7af40ad162d9f2d330c9a85bafec8a136227ccae.jpg',
+                        jump_url: 'https://www.baidu.com',
+                        jump_type: 1
+                    },
+                    {
+                        title: '首页轮播图3',
+                        image_url: 'https://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/faf2b2119313b07e6077d3bc0ad7912396dd8cb8.jpg',
+                        jump_url: 'https://www.baidu.com',
+                        jump_type: 1
+                    }
+                ],
+                alert: {
+                    title: '首页弹出广告',
+                    image_url: 'https://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1206/11/c0/11958819_1339405691592.jpg',
+                    jump_url: 'https://www.baidu.com',
+                    jump_type: 1
+                }
             }
         })
     })

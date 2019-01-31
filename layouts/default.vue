@@ -1,5 +1,5 @@
 <template>
-  <div class="app-wrap" ref="appWrap">
+  <div class="app-wrap">
     <header-component :headerConfig="curHeaderConfig" />
     <nuxt />
     <menu-component :menuConfig="curMenuConfig" />
