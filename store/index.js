@@ -3,11 +3,10 @@ export const state = () => ({
     headerConfig: {
         showHeader: true,
         showBack: true,
-        showSet: false,
+        showLine: true,
         title: ''
     },
     menuConfig: {
-        showMenu: false,
         currentIndex: 0,
         item: [{
                 name: '首页',
@@ -29,25 +28,15 @@ export const state = () => ({
             }
         ]
     },
-    appVersion: '',
-    mobileBook: []
+    appVersion: ''
 })
 
 export const mutations = {
     userInfo (state, data) {
         state.userInfo = data
     },
-    headerConfig (state, data) {
-        Object.assign(state.headerConfig, data)
-    },
-    menuConfig (state, data) {
-        Object.assign(state.menuConfig, data)
-    },
     appVersion (state, data) {
         state.appVersion = data
-    },
-    mobileBook (state, data) {
-        state.mobileBook = data
     }
 }
 

@@ -4,7 +4,8 @@ const setHeaderConfigAction = (name) => {
     // index
     if (name === 'index') {
         config = {
-            showBack: false
+            showBack: false,
+            showLine: false
         }
     }
 
@@ -12,7 +13,8 @@ const setHeaderConfigAction = (name) => {
     if (name === 'home') {
         config = {
             showBack: false,
-            title: '首页'
+            showLine: false,
+            title: 'APP-Content'
         }
     }
 
@@ -21,6 +23,13 @@ const setHeaderConfigAction = (name) => {
         config = {
             showBack: false,
             title: '列表'
+        }
+    }
+
+    // list/id
+    if (name === 'list-id') {
+        config = {
+            showService: true
         }
     }
 
@@ -41,7 +50,7 @@ const setHeaderConfigAction = (name) => {
     }
 
     // hack 活动页隐藏header
-    if (name && name.indexOf('activities') === 0) {
+    if (name.indexOf('activities') === 0) {
         config = {
             showHeader: false,
             title: ''
@@ -51,34 +60,4 @@ const setHeaderConfigAction = (name) => {
     return config
 }
 
-const setMenuConfigAction = (name) => {
-    let config = {}
-
-    // home
-    if (name === 'home') {
-        config = {
-            showMenu: true,
-            currentIndex: 0
-        }
-    }
-
-    // list
-    if (name === 'list') {
-        config = {
-            showMenu: true,
-            currentIndex: 1
-        }
-    }
-
-    // mine
-    if (name === 'mine') {
-        config = {
-            showMenu: true,
-            currentIndex: 2
-        }
-    }
-
-    return config
-}
-
-export { setHeaderConfigAction, setMenuConfigAction }
+export { setHeaderConfigAction }

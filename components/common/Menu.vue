@@ -1,28 +1,18 @@
 <template>
-    <section v-if="menuConfig.showMenu" class="menu-wrap border-top-line">
-        <ul class="menu-list">
-            <li class="list-item" :class="{ 'current': key === menuConfig.currentIndex }" v-for="(item, key) in menuConfig.item" :key="key" @click="changeMenu(key, item.url)">
+    <section class="menu-wrap border-top-line">
+        <div class="menu-list">
+            <router-link :to="item.url" class="list-item" :class="{ 'current': key === menuConfig.currentIndex }" v-for="(item, key) in menuConfig.item" :key="key" @click="changeMenu(key, item.url)">
                 <img class="img" :src="key === menuConfig.currentIndex ? item.iconCurrent : item.icon" />
                 <span class="name">{{item.name}}</span>
-            </li>
-        </ul>
+            </router-link>
+        </div>
     </section>
 </template>
 
 <script>
 export default {
     name: 'Menu',
-    props: ['menuConfig'],
-    mounted () {
-    },
-    methods: {
-        changeMenu (key, url) {
-            this.$store.commit('menuConfig', {
-                currentIndex: key
-            })
-            this.$router.push(url)
-        }
-    }
+    props: ['menuConfig']
 }
 </script>
 

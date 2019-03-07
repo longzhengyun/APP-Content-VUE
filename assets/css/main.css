@@ -23,9 +23,7 @@ body{overflow-x:hidden;-webkit-text-size-adjust:none;-webkit-tap-highlight-color
 
 /* layouts */
 #__nuxt,
-#__layout,
-.app-wrap{height:100%;}
-.app-wrap{display:flex;flex-direction:column;}
+#__layout{height:100%;}
 
 /* border line */
 .border-top-line::after,
