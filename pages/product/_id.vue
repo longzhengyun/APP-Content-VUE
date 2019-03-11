@@ -6,6 +6,7 @@
 
 <script>
     import MescrollComponent from 'mescroll.js/mescroll.vue'
+    import { setHeaderConfigAction } from './../../assets/js/setAppConfig'
 
     export default {
         name: 'productDetail',
@@ -28,7 +29,11 @@
                 detailData: null
             }
         },
-        computed: {},
+        computed: {
+            headerConfig () {
+                return this.$store.state.headerConfig
+            }
+        },
         mounted () {
             this.$loading.show() // 首次加载显示loading
         },
@@ -48,6 +53,8 @@
                     if (data.code === 0) {
                         this.detailData = data.response
 
+                        this.setDetailHeader() // 设置客户端产品详情头部信息
+
                         this.$nextTick(() => {
                             mescroll.endSuccess()
                         })
@@ -58,6 +65,16 @@
                     this.$loading.hide() // 加载失败，隐藏loading
                     mescroll.endErr(error)
                 })
+            },
+            setDetailHeader () {
+                window.postMessage(JSON.stringify({
+                    route: this.$route.name,
+                    headerConfig: Object.assign({}, this.headerConfig, {
+                        title: this.detailData.name,
+                        icon: this.detailData.icon,
+                        showService: true
+                    }, setHeaderConfigAction(this.$route.name))
+                }), '*')
             }
         },
         beforeDestroy () {

@@ -21,11 +21,13 @@
         watch: {
             // 如果路由有变化，会再次执行该方法
             '$route': function (val, oldVal) {
-                // 路由变化时向客户端发送当前路由信息
-                window.postMessage(JSON.stringify({
-                    route: val.name,
-                    headerConfig: Object.assign({}, this.headerConfig, setHeaderConfigAction(val.name))
-                }), '*')
+                if (val.name !== 'product-id') { // 排除产品详情
+                    // 路由变化时向客户端发送当前路由信息
+                    window.postMessage(JSON.stringify({
+                        route: val.name,
+                        headerConfig: Object.assign({}, this.headerConfig, setHeaderConfigAction(val.name))
+                    }), '*')
+                }
 
                 if (val.name !== 'index' && oldVal.name === 'index' && !this.userInfo) {
                     this.$router.replace({ path: '/' })
