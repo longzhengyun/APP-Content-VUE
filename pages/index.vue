@@ -1,18 +1,20 @@
 <template>
-    <section class="container" v-if="showLogin">
-        <div class="form-cont">
-            <div class="user-icon"><img class="img" src="/img/common/default_avatar.png" alt="" /></div>
-            <div class="form-mode">
-                <div class="mode-item">
-                    <label class="item-value"><input class="item-input" type="tel" placeholder="请输入手机号" maxlength="11" v-model="formData.phone" /></label>
+    <section class="section-wrap">
+        <div class="mescroll" v-if="showLogin">
+            <div class="form-cont">
+                <div class="user-icon"><img class="img" src="/img/common/default_avatar.png" alt="" /></div>
+                <div class="form-mode">
+                    <div class="mode-item">
+                        <label class="item-value"><input class="item-input" type="tel" placeholder="请输入手机号" maxlength="11" v-model="formData.phone" /></label>
+                    </div>
+                    <div class="mode-item">
+                        <label class="item-value"><input class="item-input" type="tel" placeholder="请输入验证码" maxlength="4" v-model="formData.code" /></label>
+                        <span class="btn-code" :class="{'disable': !getCodeState}" @click="getCode">{{checkCodeText}}</span>
+                    </div>
                 </div>
-                <div class="mode-item">
-                    <label class="item-value"><input class="item-input" type="tel" placeholder="请输入验证码" maxlength="4" v-model="formData.code" /></label>
-                    <span class="btn-code" :class="{'disable': !getCodeState}" @click="getCode">{{checkCodeText}}</span>
+                <div class="form-submit">
+                    <span class="btn-submit" :class="{ 'disable': !submitState }" @click="submitData">登录</span>
                 </div>
-            </div>
-            <div class="form-submit">
-                <span class="btn-submit" :class="{ 'disable': !submitState }" @click="submitData">登录</span>
             </div>
         </div>
     </section>
@@ -20,6 +22,7 @@
 
 <script>
     export default {
+        name: 'login',
         data () {
             return {
                 showLogin: false,

@@ -4,10 +4,7 @@ var cacheStorageName = '1.0.0';
 // 定义缓存文件列表
 var cacheList = [
     '/favicon.ico',
-    '/manifest.json',
-    '/css/library/mobileSelect.min.css',
-    '/css/library/swiper.min.css',
-    '/js/library/mobileSelect.min.js'
+    '/manifest.json'
 ];
 
 // 安装，抓取资源进行缓存

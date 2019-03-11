@@ -15,10 +15,10 @@ export const state = () => ({
                 url: '/home'
             },
             {
-                name: '列表',
-                icon: '/img/common/icon_list.png',
-                iconCurrent: '/img/common/icon_list_current.png',
-                url: '/list'
+                name: '产品',
+                icon: '/img/common/icon_product.png',
+                iconCurrent: '/img/common/icon_product_current.png',
+                url: '/product'
             },
             {
                 name: '我的',
@@ -28,7 +28,8 @@ export const state = () => ({
             }
         ]
     },
-    appVersion: ''
+    appVersion: '',
+    productSelectData: [0, 0, 0]
 })
 
 export const mutations = {
@@ -37,6 +38,9 @@ export const mutations = {
     },
     appVersion (state, data) {
         state.appVersion = data
+    },
+    productSelectData(state, data) {
+        state.productSelectData = data
     }
 }
 

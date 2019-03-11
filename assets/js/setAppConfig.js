@@ -14,20 +14,20 @@ const setHeaderConfigAction = (name) => {
         config = {
             showBack: false,
             showLine: false,
-            title: 'APP-Content'
+            title: 'APP'
         }
     }
 
-    // list
-    if (name === 'list') {
+    // product
+    if (name === 'product') {
         config = {
             showBack: false,
-            title: '列表'
+            title: '产品大全'
         }
     }
 
-    // list/id
-    if (name === 'list-id') {
+    // product/id
+    if (name === 'product-id') {
         config = {
             showService: true
         }
@@ -37,6 +37,7 @@ const setHeaderConfigAction = (name) => {
     if (name === 'mine') {
         config = {
             showBack: false,
+            showLine: false,
             showSet: true,
             title: '我的'
         }
