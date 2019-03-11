@@ -9,6 +9,11 @@
 
     export default {
         name: 'productDetail',
+        async asyncData ({ params }) {
+            return {
+                productId: params.id
+            }
+        },
         head () {
             return {
                 title: '产品详情'
@@ -24,48 +29,33 @@
             }
         },
         computed: {},
+        mounted () {
+            this.$loading.show() // 首次加载显示loading
+        },
         methods: {
             mescrollInit (mescroll) { // mescroll组件初始化的回调,可获取到mescroll对象
                 this.mescroll = mescroll
             },
             downCallback (mescroll) {
-                this.$axios.post('/api/platform/online-data').then((res) => {
+                this.$axios.post('/api/platform/detail', {
+                    para: {
+                        id: this.productId
+                    }
+                }).then((res) => {
+                    this.$loading.hide() // 加载成功，隐藏loading
+
                     let data = res.data
                     if (data.code === 0) {
-                        this.indexData = data.response
-                        this.indexHotProduct = this.indexData.hot_platforms.shift() // 删除第一个产品，赋值给热门产品
+                        this.detailData = data.response
 
                         this.$nextTick(() => {
-                            setTimeout(() => {
-                                window.productExposure.init({
-                                    wrapId: 'mescroll',
-                                    domClass: '.index-hot',
-                                    callback: (value) => {
-                                        this.platformExposure({
-                                            platform_id: value.id,
-                                            campaign_url: value.campaignurl,
-                                            category_id: this.indexData.hot_category_id
-                                        })
-                                    }
-                                }) // 监听推荐产品曝光信息
-                                window.productExposure.init({
-                                    wrapId: 'mescroll',
-                                    domClass: '.list-product .list-item',
-                                    callback: (value) => {
-                                        this.platformExposure({
-                                            platform_id: value.id,
-                                            campaign_url: value.campaignurl,
-                                            category_id: this.indexData.hot_category_id
-                                        })
-                                    }
-                                }) // 监听热门产品曝光信息
-                            }, 100)
                             mescroll.endSuccess()
                         })
                     } else {
                         mescroll.endErr()
                     }
                 }).catch((error) => {
+                    this.$loading.hide() // 加载失败，隐藏loading
                     mescroll.endErr(error)
                 })
             }

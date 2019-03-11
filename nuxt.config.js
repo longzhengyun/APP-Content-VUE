@@ -22,13 +22,13 @@ module.exports = {
             { hid: 'description', name: 'description', content: pkg.description }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-            { rel: 'manifest', href: '/manifest.json' },
-            { rel: 'apple-touch-icon', sizes: '180x180', href: '/img/common/icon.png' }
+            { rel: 'icon', type: 'image/png', href: '/img/common/icon.png' },
+            { rel: 'apple-touch-icon', sizes: '180x180', href: '/img/common/icon.png' },
+            { rel: 'manifest', href: '/manifest.json' }
         ],
         script: [
-            { src: '/js/common/productExposure.js', defer: 'defer' },
-            { innerHTML: '(function(d,c){var e=d.documentElement,b="orientationchange" in window?"orientationchange":"resize",a=function(){var f=e.clientWidth;if(!f){return}e.style.fontSize=100*(f/750)+"px"};if(!d.addEventListener){return}c.addEventListener(b,a,false);d.addEventListener("DOMContentLoaded",a,false)})(document,window);', type: 'text/javascript', charset: 'utf-8' }
+            { innerHTML: '(function(d,c){var e=d.documentElement,b="orientationchange" in window?"orientationchange":"resize",a=function(){var f=e.clientWidth;if(!f){return}e.style.fontSize=100*(f/750)+"px"};if(!d.addEventListener){return}c.addEventListener(b,a,false);d.addEventListener("DOMContentLoaded",a,false)})(document,window);', type: 'text/javascript', charset: 'utf-8' },
+            { src: '/js/common/productExposure.js', defer: 'defer' }
         ],
         __dangerouslyDisableSanitizers: ['script']
     },
@@ -47,7 +47,8 @@ module.exports = {
     ** Plugins to load before mounting the App
     */
     plugins: [
-        { src: '~plugins/swiper.client.js'}
+        { src: '~plugins/swiper.client.js'},
+        { src: '~plugins/loading.client.js'}
     ],
 
     /*

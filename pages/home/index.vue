@@ -1,6 +1,6 @@
 <template>
     <section class="section-wrap">
-        <mescroll-component :down="mescrollDown" @init="mescrollInit">
+        <mescroll-component :down="mescrollDown" @init="mescrollInit" id="mescroll">
             <template v-if="indexData">
                 <div class="index-banner">
                     <banner-component v-if="indexData.top_banner" class="banner" :data="indexData.top_banner" @callback="clickCallback" />
@@ -46,15 +46,21 @@
                 return Object.assign({}, this.$store.state.menuConfig, { currentIndex: 0 })
             }
         },
+        mounted () {
+            this.$loading.show() // 首次加载显示loading
+        },
         methods: {
             mescrollInit (mescroll) { // mescroll组件初始化的回调,可获取到mescroll对象
                 this.mescroll = mescroll
             },
             downCallback (mescroll) {
                 if (this.indexData) {
-                    this.indexData.top_banner = []
+                    this.indexData.top_banner = [] // 清除数据，解决swiper组件缓存图片问题
                 }
+
                 this.$axios.post('/api/platform/online-data').then((res) => {
+                    this.$loading.hide() // 加载成功，隐藏loading
+
                     let data = res.data
                     if (data.code === 0) {
                         this.indexData = data.response
@@ -85,14 +91,17 @@
                                     }
                                 }) // 监听热门产品曝光信息
                             }, 100)
+
                             mescroll.endSuccess()
                         })
                     } else {
                         mescroll.endErr()
                     }
                 }).catch((error) => {
+                    this.$loading.hide() // 加载失败，隐藏loading
                     mescroll.endErr(error)
                 })
+
                 this.$axios.post('/api/app/alert-advertise').then((res) => {
                     let data = res.data
                     if (data.code === 0 && data.response.alert_ad) {

@@ -1,7 +1,7 @@
 <template>
     <section class="section-wrap">
         <filter-tab-component :filterData="filterData" :selectData="selectData" @changeSelectData="changeSelectData" @changeMescrollState="changeMescrollState" />
-        <mescroll-component :down="mescrollDown" @init="mescrollInit">
+        <mescroll-component :down="mescrollDown" @init="mescrollInit" id="mescroll">
             <list-product-component class="product-list" :data="listData" v-if="listData.length > 0" />
             <nothing-component v-if="showNothing" />
         </mescroll-component>
@@ -135,6 +135,9 @@
                 return this.$store.state.productSelectData
             }
         },
+        mounted () {
+            this.$loading.show() // 首次加载显示loading
+        },
         methods: {
             mescrollInit (mescroll) { // mescroll组件初始化的回调,可获取到mescroll对象
                 this.mescroll = mescroll
@@ -165,6 +168,8 @@
                 this.$axios.post('/api/platform/all-online', {
                     para: filterConfig
                 }).then((res) => {
+                    this.$loading.hide() // 加载成功，隐藏loading
+
                     let data = res.data
                     if (data.code === 0) {
                         this.listData = data.response || []
@@ -196,6 +201,7 @@
                         this.mescroll.endErr()
                     }
                 }).catch((error) => {
+                    this.$loading.hide() // 加载失败，隐藏loading
                     this.mescroll.endErr(error)
                 })
             },

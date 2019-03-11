@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { axiosPost } from './../apiConfig'
+import { axiosPost } from '../apiConfig'
 
 const router = Router()
 
