@@ -16,8 +16,138 @@
     import FilterTabComponent from './../../components/product/FilterTab'
     import ListProductComponent from './../../components/product/ListProduct'
 
+    // 产品筛选参数格式化
+    const formatData = (select, filter, initial) => {
+        let result = Object.assign({}, initial)
+        select.map((val, index) => {
+            if (index === 0) {
+                result.amount_min = filter[index][val].amount_min
+                result.amount_max = filter[index][val].amount_max
+            }
+            if (index === 1) {
+                result.day_min = filter[index][val].day_min
+                result.day_max = filter[index][val].day_max
+            }
+            if (index === 2) {
+                result.sort_type = filter[index][val].sort_type
+                if (result.sort_type) {
+                    result.sort_value = filter[index][val].sort_value
+                }
+            }
+        })
+
+        return result
+    }
+
     export default {
         name: 'product',
+        async asyncData ({ $axios, store }) {
+            const selectData = store.state.productSelectData
+            const filterData = [
+                [
+                    {
+                        name: '额度不限',
+                        amount_min: '0',
+                        amount_max: '0'
+                    },
+                    {
+                        name: '1千元以下',
+                        amount_min: '0',
+                        amount_max: '1000'
+                    },
+                    {
+                        name: '1-2千元',
+                        amount_min: '1000',
+                        amount_max: '2000'
+                    },
+                    {
+                        name: '2-5千元',
+                        amount_min: '2000',
+                        amount_max: '5000'
+                    },
+                    {
+                        name: '5-8千元',
+                        amount_min: '5000',
+                        amount_max: '8000'
+                    },
+                    {
+                        name: '8千元以上',
+                        amount_min: '8000',
+                        amount_max: '0'
+                    }
+                ],
+                [
+                    {
+                        name: '期限不限',
+                        day_min: '0',
+                        day_max: '0'
+                    },
+                    {
+                        name: '7天以内',
+                        day_min: '0',
+                        day_max: '7'
+                    },
+                    {
+                        name: '7-14天',
+                        day_min: '7',
+                        day_max: '14'
+                    },
+                    {
+                        name: '14-30天',
+                        day_min: '14',
+                        day_max: '30'
+                    },
+                    {
+                        name: '1-3个月',
+                        day_min: '30',
+                        day_max: '90'
+                    },
+                    {
+                        name: '3-6个月',
+                        day_min: '90',
+                        day_max: '180'
+                    },
+                    {
+                        name: '6-12个月',
+                        day_min: '180',
+                        day_max: '360'
+                    },
+                    {
+                        name: '1年以上',
+                        day_min: '360',
+                        day_max: '0'
+                    }
+                ],
+                [
+                    {
+                        name: '默认排序',
+                        sort_type: null
+                    },
+                    {
+                        name: '利率最低',
+                        sort_type: '1',
+                        sort_value: '2'
+                    }
+                ]
+            ]
+
+            let filterConfig = {
+                amount_min: '0',
+                amount_max: '0',
+                day_min: '0',
+                day_max: '0',
+                sort_type: null
+            }
+
+            let para = formatData(selectData, filterData, filterConfig)
+            let { data } = await $axios.post('/api/platform/all-online', { para })
+            return {
+                filterConfig,
+                filterData,
+                listData: data.response,
+                showNothing: !(data.response && data.response.length > 0)
+            }
+        },
         head () {
             return {
                 title: '产品大全'
@@ -27,104 +157,9 @@
             return {
                 mescroll: null,
                 mescrollDown: {
+                    auto: false,
                     callback: this.downCallback
-                },
-                showNothing: false,
-                listData: [],
-                filterConfig: {
-                    amount_min: '0',
-                    amount_max: '0',
-                    day_min: '0',
-                    day_max: '0',
-                    sort_type: null
-                },
-                filterData: [
-                    [
-                        {
-                            name: '额度不限',
-                            amount_min: '0',
-                            amount_max: '0'
-                        },
-                        {
-                            name: '1千元以下',
-                            amount_min: '0',
-                            amount_max: '1000'
-                        },
-                        {
-                            name: '1-2千元',
-                            amount_min: '1000',
-                            amount_max: '2000'
-                        },
-                        {
-                            name: '2-5千元',
-                            amount_min: '2000',
-                            amount_max: '5000'
-                        },
-                        {
-                            name: '5-8千元',
-                            amount_min: '5000',
-                            amount_max: '8000'
-                        },
-                        {
-                            name: '8千元以上',
-                            amount_min: '8000',
-                            amount_max: '0'
-                        }
-                    ],
-                    [
-                        {
-                            name: '期限不限',
-                            day_min: '0',
-                            day_max: '0'
-                        },
-                        {
-                            name: '7天以内',
-                            day_min: '0',
-                            day_max: '7'
-                        },
-                        {
-                            name: '7-14天',
-                            day_min: '7',
-                            day_max: '14'
-                        },
-                        {
-                            name: '14-30天',
-                            day_min: '14',
-                            day_max: '30'
-                        },
-                        {
-                            name: '1-3个月',
-                            day_min: '30',
-                            day_max: '90'
-                        },
-                        {
-                            name: '3-6个月',
-                            day_min: '90',
-                            day_max: '180'
-                        },
-                        {
-                            name: '6-12个月',
-                            day_min: '180',
-                            day_max: '360'
-                        },
-                        {
-                            name: '1年以上',
-                            day_min: '360',
-                            day_max: '0'
-                        }
-                    ],
-                    [
-                        {
-                            name: '默认排序',
-                            sort_type: null
-                        },
-                        {
-                            name: '利率最低',
-                            sort_type: '1',
-                            sort_value: '2'
-                        }
-                    ]
-                ]
+                }
             }
         },
         computed: {
@@ -136,7 +171,7 @@
             }
         },
         mounted () {
-            this.$loading.show() // 首次加载显示loading
+            this.initProductExposure() // 初始化产品曝光
         },
         methods: {
             mescrollInit (mescroll) { // mescroll组件初始化的回调,可获取到mescroll对象
@@ -147,66 +182,46 @@
             },
             changeSelectData (data) {
                 this.$store.commit('productSelectData', data)
-                let filterConfig = this.filterConfig
-                this.selectData.map((val, index) => {
-                    if (index === 0) {
-                        filterConfig.amount_min = this.filterData[index][val].amount_min
-                        filterConfig.amount_max = this.filterData[index][val].amount_max
-                    }
-                    if (index === 1) {
-                        filterConfig.day_min = this.filterData[index][val].day_min
-                        filterConfig.day_max = this.filterData[index][val].day_max
-                    }
-                    if (index === 2) {
-                        filterConfig.sort_type = this.filterData[index][val].sort_type
-                        if (filterConfig.sort_type) {
-                            filterConfig.sort_value = this.filterData[index][val].sort_value
-                        }
-                    }
-                })
+                let para = formatData(this.selectData, this.filterData, this.filterConfig)
 
-                this.$axios.post('/api/platform/all-online', {
-                    para: filterConfig
-                }).then((res) => {
-                    this.$loading.hide() // 加载成功，隐藏loading
-
+                this.$axios.post('/api/platform/all-online', { para }).then((res) => {
                     let data = res.data
+
+                    this.showNothing = !(data.response && data.response.length > 0)
+
                     if (data.code === 0) {
-                        this.listData = data.response || []
-                        if (this.listData.length === 0) {
-                            this.showNothing = true
-                        } else {
-                            this.showNothing = false
-                        }
+                        this.listData = data.response
 
                         this.mescroll.scrollTo(0, 0) // 回到顶部
 
                         this.$nextTick(() => {
                             setTimeout(() => {
-                                window.productExposure.init({
-                                    wrapId: 'mescroll',
-                                    domClass: '.list-product .list-item',
-                                    callback: (value) => {
-                                        this.platformExposure({
-                                            platform_id: value.id,
-                                            campaign_url: value.campaignurl,
-                                            category_id: 0
-                                        })
-                                    }
-                                }) // 监听热门产品曝光信息
-                            }, 100)
+                                this.initProductExposure() // 初始化产品曝光
+                            }, 200)
                             this.mescroll.endSuccess(data.response.length)
                         })
                     } else {
                         this.mescroll.endErr()
                     }
                 }).catch((error) => {
-                    this.$loading.hide() // 加载失败，隐藏loading
                     this.mescroll.endErr(error)
                 })
             },
             changeMescrollState (state) {
                 this.mescroll.lockDownScroll(state) // 修改下拉刷新锁定状态
+            },
+            initProductExposure () {
+                window.productExposure.init({
+                    wrapId: 'mescroll',
+                    domClass: '.list-product .list-item',
+                    callback: (value) => {
+                        this.platformExposure({
+                            platform_id: value.id,
+                            campaign_url: value.campaignurl,
+                            category_id: 0
+                        })
+                    }
+                }) // 监听热门产品曝光信息
             },
             platformExposure (para) {
                 this.$axios.post('/api/platform/exposure', { para }, { timeout: 1000 })
@@ -233,4 +248,6 @@
     }
 </script>
 
-<style scoped></style>
+<style scoped>
+    .section-wrap{background-color:#f2f2f2;}
+</style>

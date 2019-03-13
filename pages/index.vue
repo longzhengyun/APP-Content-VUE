@@ -58,28 +58,14 @@
             }
         },
         mounted () {
-            // 监听客户端发送的数据
-            this.RNSendMessage()
-
             // 验证是否登录
             let token = localStorage.getItem('token') // 获取本地存储token
             this.getUserInfo(token)
-
-            // 添加service worker
-            this.addPWA()
         },
         methods: {
             getUuid () {
                 // 重置上次登录数据
-                this.$store.commit('userInfo', {
-                    state: false,
-                    avatar: '',
-                    body_id: null,
-                    name: '',
-                    user_id: null,
-                    user_phone: '',
-                    uuid: ''
-                })
+                this.$store.commit('userInfo', null)
 
                 let uuid = localStorage.getItem('DeviceID')
                 if (uuid) {
@@ -176,11 +162,11 @@
                         para: this.formData
                     }).then((res) => {
                         let data = res.data
-                        this.$toast.show(data.message)
                         if (data.code === 0) {
                             localStorage.setItem('token', data.response.token) // 本地存储token
                             this.getUserInfo(data.response.token)
                         } else {
+                            this.$toast.show(data.message)
                             this.submitState = true // 登录失败，允许重试
                         }
                     })
@@ -192,8 +178,6 @@
                 }).then((res) => {
                     let data = res.data
 
-                    this.getDeviceInfo() // 获取客户端信息
-
                     if (data.code === 0) {
                         this.$store.commit('userInfo', data.response)
 
@@ -204,75 +188,11 @@
                         this.getUuid() // 获取设备id
                     }
                 })
-            },
-            RNSendMessage () {
-                // 监听RN postMessage传递的数据，注意使用document
-                document.addEventListener('message', this.setAppPostMessage, false)
-            },
-            setAppPostMessage (event) {
-                let message = event.data
-                if (message) {
-                    message = JSON.parse(message)
-
-                    // 获取客户端信息
-                    if (message.deviceInfoResult) {
-                        let deviceInfoResult = message.deviceInfoResult
-                        this.$store.commit('appVersion', deviceInfoResult.version)
-                        this.setCookie('version', deviceInfoResult.version, 365)
-                        this.setCookie('utm_source', deviceInfoResult.utmSource, 365)
-                        localStorage.setItem('DeviceID', deviceInfoResult.DeviceID)
-                    }
-                }
-            },
-            getDeviceInfo () {
-                this.RNPostMessage(() => {
-                    window.postMessage(JSON.stringify({ deviceInfoConfig: true }), '*')
-                })
-            },
-            RNPostMessage (init) {
-                const whenRNPostMessageReady = (cb) => { // 监听RN postMessage初始化是否完成
-                    if (window && window.postMessage.length > 0) {
-                        cb()
-                    } else {
-                        window.setTimeout(() => {
-                            whenRNPostMessageReady(cb)
-                        }, 1000)
-                    }
-                }
-
-                whenRNPostMessageReady(init)
-            },
-            setCookie (key, value, time) {
-                let date = new Date() // 获取当前时间
-                date.setTime(date.getTime() + time * 24 * 3600 * 1000) // 将date设置为time天以后，并格式化为cookie识别的时间
-                document.cookie = `${key}=${value};expires=${date.toGMTString()};path=/` // 设置cookie
-            },
-            addPWA () {
-                document.addEventListener('beforeinstallprompt', (e) => {
-                    e.preventDefault() // 阻止默认安装事件
-                    return false
-                })
-
-                // 注册serviceWorker
-                if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-                    navigator.serviceWorker.register('/serviceWorker.js').then((registration) => { // 注意SW文件的相对路径 ./ 和绝对路径 / 的区别
-                        if (localStorage.getItem('swVersion') !== swVersion) { // 解决因为服务器缓存serviceWorker.js导致的serviceWorker不更新问题
-                        registration.update().then(() => {
-                            localStorage.setItem('swVersion', swVersion)
-                        })
-                        }
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope) // 注册成功
-                    }).catch((err) => {
-                        console.log('ServiceWorker registration failed: ', err) // 注册失败
-                    })
-                }
             }
         },
         beforeDestroy () {
             clearInterval(this.timer)
             this.timer = null
-
-            document.removeEventListener('message', this.setAppPostMessage, false) // 离开时清除监听方法
         }
     }
 </script>

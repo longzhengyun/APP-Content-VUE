@@ -28,16 +28,12 @@ export const state = () => ({
             }
         ]
     },
-    appVersion: '',
     productSelectData: [0, 0, 0]
 })
 
 export const mutations = {
     userInfo (state, data) {
         state.userInfo = data
-    },
-    appVersion (state, data) {
-        state.appVersion = data
     },
     productSelectData(state, data) {
         state.productSelectData = data

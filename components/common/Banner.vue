@@ -58,7 +58,7 @@ export default {
 </script>
 <style scoped>
     .swiper-slide,
-    .swiper-slide .img{width:100%;height:100%;border-radius: .12rem;}
+    .swiper-slide .img{width:100%;height:100%;border-radius:.12rem;}
     .swiper-slide .swiper-lazy{display:none;}
     .swiper-slide .swiper-lazy-loaded{display:block;}
     .swiper-container-horizontal > .swiper-pagination-bullets,

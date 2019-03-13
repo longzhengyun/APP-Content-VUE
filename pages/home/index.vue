@@ -1,16 +1,14 @@
 <template>
     <section class="section-wrap">
         <mescroll-component :down="mescrollDown" @init="mescrollInit" id="mescroll">
-            <template v-if="indexData">
-                <div class="index-banner">
-                    <banner-component v-if="indexData.top_banner" class="banner" :data="indexData.top_banner" @callback="clickCallback" />
-                </div>
-                <div class="index-category">
-                    <category-component :data="indexData.ad_list" v-if="indexData && indexData.ad_list" @callback="clickCallback" />
-                </div>
-                <product-item-component class="index-hot" :data="indexHotProduct" />
-                <hot-list-component title="热门推荐" :data="indexData.hot_platforms" />
-            </template>
+            <div class="index-banner">
+                <banner-component :data="indexData.top_banner" class="banner" @callback="clickCallback" />
+            </div>
+            <div class="index-category">
+                <category-component :data="indexData.ad_list" @callback="clickCallback" />
+            </div>
+            <product-item-component :data="indexHotProduct" class="index-hot" />
+            <hot-list-component :data="indexData.hot_platforms" title="热门推荐" />
         </mescroll-component>
         <menu-component :menuConfig="menuConfig" />
     </section>
@@ -26,6 +24,15 @@
 
     export default {
         name: 'home',
+        async asyncData ({ $axios }) {
+            let indexData = await $axios.post('/api/platform/online-data')
+            let popAdData = await $axios.post('/api/app/alert-advertise')
+            return {
+                indexData: indexData.data.response,
+                indexHotProduct: indexData.data.response.hot_platforms.shift(), // 删除第一个产品，赋值给热门产品
+                popAdData: popAdData.data.response.alert_ad
+            }
+        },
         head () {
             return {
                 title: '首页'
@@ -35,10 +42,9 @@
             return {
                 mescroll: null,
                 mescrollDown: {
+                    auto: false,
                     callback: this.downCallback
-                },
-                indexData: null,
-                indexHotProduct: null
+                }
             }
         },
         computed: {
@@ -47,7 +53,7 @@
             }
         },
         mounted () {
-            this.$loading.show() // 首次加载显示loading
+            this.initProductExposure() // 初始化产品曝光
         },
         methods: {
             mescrollInit (mescroll) { // mescroll组件初始化的回调,可获取到mescroll对象
@@ -59,8 +65,6 @@
                 }
 
                 this.$axios.post('/api/platform/online-data').then((res) => {
-                    this.$loading.hide() // 加载成功，隐藏loading
-
                     let data = res.data
                     if (data.code === 0) {
                         this.indexData = data.response
@@ -68,30 +72,8 @@
 
                         this.$nextTick(() => {
                             setTimeout(() => {
-                                window.productExposure.init({
-                                    wrapId: 'mescroll',
-                                    domClass: '.index-hot',
-                                    callback: (value) => {
-                                        this.platformExposure({
-                                            platform_id: value.id,
-                                            campaign_url: value.campaignurl,
-                                            category_id: this.indexData.hot_category_id
-                                        })
-                                    }
-                                }) // 监听推荐产品曝光信息
-                                window.productExposure.init({
-                                    wrapId: 'mescroll',
-                                    domClass: '.list-product .list-item',
-                                    callback: (value) => {
-                                        this.platformExposure({
-                                            platform_id: value.id,
-                                            campaign_url: value.campaignurl,
-                                            category_id: this.indexData.hot_category_id
-                                        })
-                                    }
-                                }) // 监听热门产品曝光信息
-                            }, 100)
-
+                                this.initProductExposure() // 初始化产品曝光
+                            }, 200)
                             mescroll.endSuccess()
                         })
                     } else {
@@ -100,13 +82,6 @@
                 }).catch((error) => {
                     this.$loading.hide() // 加载失败，隐藏loading
                     mescroll.endErr(error)
-                })
-
-                this.$axios.post('/api/app/alert-advertise').then((res) => {
-                    let data = res.data
-                    if (data.code === 0 && data.response.alert_ad) {
-                        this.popAdData = data.response.alert_ad
-                    }
                 })
             },
             clickCallback (item) {
@@ -120,6 +95,30 @@
                     }
                     window.postMessage(JSON.stringify({ targetViewConfig }), '*') // 向客户端发送第三方页面配置数据
                 }
+            },
+            initProductExposure () {
+                window.productExposure.init({
+                    wrapId: 'mescroll',
+                    domClass: '.index-hot',
+                    callback: (value) => {
+                        this.platformExposure({
+                            platform_id: value.id,
+                            campaign_url: value.campaignurl,
+                            category_id: this.indexData.hot_category_id
+                        })
+                    }
+                }) // 监听推荐产品曝光信息
+                window.productExposure.init({
+                    wrapId: 'mescroll',
+                    domClass: '.list-product .list-item',
+                    callback: (value) => {
+                        this.platformExposure({
+                            platform_id: value.id,
+                            campaign_url: value.campaignurl,
+                            category_id: this.indexData.hot_category_id
+                        })
+                    }
+                }) // 监听热门产品曝光信息
             },
             platformExposure (para) {
                 this.$axios.post('/api/platform/exposure', { para }, { timeout: 1000 })
@@ -148,7 +147,7 @@
     .index-banner{height:1.68rem;padding:.25rem .3rem 0 .3rem;background-color:#fff;}
     .index-banner .banner{position:relative;height:1.68rem;overflow:hidden;}
 
-    .index-category{padding:.25rem .3rem 0 .3rem;background-color:#fff;}
+    .index-category{height:1.56rem;padding:.25rem .3rem 0 .3rem;background-color:#fff;}
 
     .index-hot{margin:.2rem 0;}
 </style>

@@ -20,7 +20,7 @@
         props: ['title', 'data'],
         methods: {
             goMore () {
-                this.$router.push({ path: '/list' })
+                this.$router.push({ path: '/product' })
             },
             goTarget (item) {
                 if (item.is_third_call === 0) {
