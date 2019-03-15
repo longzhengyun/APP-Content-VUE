@@ -21,6 +21,7 @@
 
 <script>
     export default {
+        name: 'set',
         head () {
             return {
                 title: '设置'
@@ -108,8 +109,6 @@
 </script>
 
 <style scoped>
-    .container{position:relative;}
-
     .set-list{padding:0 .3rem;margin-bottom:.6rem;}
     .set-list .item-name,
     .set-list .item-update,

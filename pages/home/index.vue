@@ -80,7 +80,6 @@
                         mescroll.endErr()
                     }
                 }).catch((error) => {
-                    this.$loading.hide() // 加载失败，隐藏loading
                     mescroll.endErr(error)
                 })
             },

@@ -162,11 +162,11 @@
                         para: this.formData
                     }).then((res) => {
                         let data = res.data
+                        this.$toast.show(data.message)
                         if (data.code === 0) {
                             localStorage.setItem('token', data.response.token) // 本地存储token
                             this.getUserInfo(data.response.token)
                         } else {
-                            this.$toast.show(data.message)
                             this.submitState = true // 登录失败，允许重试
                         }
                     })

@@ -10,23 +10,43 @@
 
     export default {
         name: 'productDetail',
-        async asyncData ({ params }) {
+        validate ({ params }) {
+            return /^\d+$/.test(params.id) // 路由参数校验，必须是number类型
+        },
+        async asyncData ({ params, $axios }) {
+            let { data } = await $axios.post('/api/platform/detail', {
+                para: {
+                    id: params.id
+                }
+            })
+
             return {
-                productId: params.id
+                productId: params.id,
+                detailData: data.response
             }
         },
         head () {
             return {
-                title: '产品详情'
+                title: this.detailData.name,
+                meta: [
+                    {
+                        name: 'keywords',
+                        content: this.detailData.name
+                    },
+                    {
+                        name: 'description',
+                        content: this.detailData.slogan
+                    }
+                ]
             }
         },
         data () {
             return {
                 mescroll: null,
                 mescrollDown: {
+                    auto: false,
                     callback: this.downCallback
-                },
-                detailData: null
+                }
             }
         },
         computed: {
@@ -34,9 +54,7 @@
                 return this.$store.state.headerConfig
             }
         },
-        mounted () {
-            this.$loading.show() // 首次加载显示loading
-        },
+        mounted () {},
         methods: {
             mescrollInit (mescroll) { // mescroll组件初始化的回调,可获取到mescroll对象
                 this.mescroll = mescroll
@@ -47,8 +65,6 @@
                         id: this.productId
                     }
                 }).then((res) => {
-                    this.$loading.hide() // 加载成功，隐藏loading
-
                     let data = res.data
                     if (data.code === 0) {
                         this.detailData = data.response
@@ -62,7 +78,6 @@
                         mescroll.endErr()
                     }
                 }).catch((error) => {
-                    this.$loading.hide() // 加载失败，隐藏loading
                     mescroll.endErr(error)
                 })
             },
@@ -89,11 +104,4 @@
     }
 </script>
 
-<style scoped>
-    .index-banner{height:1.68rem;padding:.25rem .3rem 0 .3rem;background-color:#fff;}
-    .index-banner .banner{position:relative;height:1.68rem;overflow:hidden;}
-
-    .index-category{padding:.25rem .3rem 0 .3rem;background-color:#fff;}
-
-    .index-hot{margin:.2rem 0;}
-</style>
+<style scoped></style>
