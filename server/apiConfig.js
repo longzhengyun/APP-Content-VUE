@@ -83,6 +83,8 @@ const axiosPost = (url, req, res, callback) => {
             callback(response.data)
         }
         res.json(response.data)
+    }).catch(err => {
+        res.json(err)
     })
 }
 
