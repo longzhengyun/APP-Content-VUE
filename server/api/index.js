@@ -1,8 +1,8 @@
-import { Router } from 'express'
+const Router = require('express')
 
-import user from './user'
-import product from './product'
-import other from './other'
+const user = require('./user')
+const product = require('./product')
+const other = require('./other')
 
 const router = Router()
 
@@ -10,4 +10,4 @@ router.use(user) // 登录、用户信息、认证
 router.use(product) // 产品
 router.use(other) // 其他
 
-export default router
+module.exports = router

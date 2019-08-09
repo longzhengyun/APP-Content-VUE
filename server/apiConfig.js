@@ -1,13 +1,10 @@
-import axios from 'axios'
+const axios = require('axios')
 
-let SERVER_URL = '' // api url
+let SERVER_URL = 'http://192.168.20.13:8097/api' // 本地环境 默认api url
 
 if (process.env.CONST_ENV === 'production') { // 生产环境
 } else if (process.env.CONST_ENV === 'onlineTest') { // 线上测试环境
 } else if (process.env.CONST_ENV === 'offlineTest') { // 线下测试环境
-    SERVER_URL = 'http://192.168.20.13:8097/api'
-} else { // 本地环境
-    SERVER_URL = 'http://192.168.20.13:8097/api'
 }
 
 // 获取用户真实ip
@@ -88,4 +85,4 @@ const axiosPost = (url, req, res, callback) => {
     })
 }
 
-export { axiosPost, checkSystem }
+module.exports = { axiosPost, checkSystem }

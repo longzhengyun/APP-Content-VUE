@@ -1,7 +1,7 @@
-import express from 'express'
-import consola from 'consola'
-import { Nuxt, Builder } from 'nuxt'
-import api from './api'
+const express = require('express')
+const consola = require('consola')
+const { Nuxt, Builder } = require('nuxt')
+const api = require('./api')
 
 const app = express()
 const host = process.env.HOST || '0.0.0.0'

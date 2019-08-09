@@ -1,6 +1,6 @@
-import { Router } from 'express'
+const Router = require('express')
 
-import { axiosPost } from './../apiConfig'
+const { axiosPost } = require('./../apiConfig')
 
 const router = Router()
 
@@ -51,4 +51,4 @@ router.post('/user/info', (req, res) => {
     })
 })
 
-export default router
+module.exports = router
