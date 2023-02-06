@@ -15,7 +15,7 @@
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/toast": "^3.2.1",
     "cookie-parser": "^1.4.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mescroll.js": "^1.4.1",
     "nuxt": "^2.15.8",
     "vue-awesome-swiper": "^3.1.3"
